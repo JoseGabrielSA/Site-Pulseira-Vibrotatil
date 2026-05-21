@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulseira Vibrotátil - C.N.</title>
+  <style>
+    :root {
+      --bg: #0a0f1f;
+      --card: rgba(255,255,255,0.06);
+      --text: #f5f7ff;
+      --muted: #b8c0e0;
+      --primary: #57c7ff;
+      --secondary: #8b5cf6;
+      --border: rgba(255,255,255,0.12);
+      --shadow: 0 0 25px rgba(87,199,255,0.15);
+    }
+
+    body.light {
+      --bg: #eef4ff;
+      --card: rgba(255,255,255,0.85);
+      --text: #101828;
+      --muted: #475467;
+      --primary: #0077ff;
+      --secondary: #6d28d9;
+      --border: rgba(0,0,0,0.08);
+      --shadow: 0 0 20px rgba(0,119,255,0.12);
+    }
+    /* Estilização geral e temas claro/escuro */
+      body {
+          background:
+          radial-gradient(circle at top, rgba(87,199,255,0.12), transparent 30%),
+          linear-gradient(135deg, #0a0f1f, #10182d);
+          color: var(--text);
+          min-height: 100vh;
+          transition: background 0.4s ease, color 0.4s ease;
+          overflow-x: hidden;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, rgba(87,199,255,0.12), transparent 30%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .hero {
+      max-width: 1000px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    h2 {
+      font-size: clamp(1.1rem, 3vw, 1.8rem);
+      font-weight: 400;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    p {
+      text-align: justify;
+    }
+
+    ul {
+      color:#b8c0e0;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      border: none;
+      background: var(--card);
+      color: var(--text);
+      padding: 0.9rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      transition: 0.3s;
+    }
+
+    .toggle-btn:hover {
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 4rem 1.5rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-align: center;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: contain;
+      max-height: 500px;
+      background: #111;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      padding: 1rem;
+      cursor: pointer;
+      font-size: 1.2rem;
+      border-radius: 50%;
+    }
+
+    .prev {
+      left: 15px;
+    }
+
+    .next {
+      right: 15px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      min-height: 220px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      min-height: 220px;
+      padding: 1rem;
+    }
+
+    footer {
+      padding: 3rem 1.5rem;
+      /*text-align: center;*/
+    }
+
+    .footer-box {
+      max-width: 900px;
+      margin: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .footer-box h3 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    .editable-space {
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+/* Estilização das etapas de funcionamento da pulseira */
+.function-steps {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.step {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.2rem;
+  transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.step::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(87,199,255,0.08),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: 0.6s;
+}
+
+.step:hover::before {
+  transform: translateX(100%);
+}
+
+.step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(87,199,255,0.12);
+}
+
+.step h3 {
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+}
+
+.step p {
+  color: var(--muted);
+}
+
+/* Animação de círculos flutuantes no fundo CSS*/
+.background-animation {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.background-animation::before,
+.background-animation::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  animation: floatGlow 12s infinite alternate ease-in-out;
+}
+
+.background-animation::before {
+  background: #57c7ff;
+  top: -100px;
+  left: -100px;
+}
+
+.background-animation::after {
+  background: #8b5cf6;
+  bottom: -100px;
+  right: -100px;
+  animation-delay: 4s;
+}
+
+@keyframes floatGlow {
+  from {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  to {
+    transform: translateY(40px) translateX(30px);
+  }
+}
+
+/* Responsividade */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 2rem 1.3rem;
+      }
+
+      .carousel img {
+        max-height: 300px;
+      }
+
+      .carousel-btn {
+        padding: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!--  Animação de circulos no fundo-->
+<div class="background-animation"></div>
+
+<!--  Botão de alternância de tema-->
+  <button class="toggle-btn" onclick="toggleTheme()">🌙/☀️</button>
+
+<!--  Cabeçalho da página-->
+  <header>
+    <div class="hero">
+      <h1>Pulseira Vibrotátil com Arduino na Detecção de Sons para Pessoas com Surdez e Deficiência Auditiva</h1>
+      <h2>Ciências da Natureza</h2>
+      <p>
+        Este projeto apresenta o desenvolvimento de uma pulseira vibrotátil baseada em Arduino,
+        criada para auxiliar pessoas surdas e com deficiência auditiva na percepção de sons do ambiente.
+        A proposta utiliza sensores e vibração para transformar estímulos sonoros em sinais táteis,
+        promovendo acessibilidade, inclusão e autonomia.
+      </p>
+    </div>
+  </header>
+
+  <!--Sobre o Projeto-->
+  <section>
+    <!-- SECTION é uma divisão da página que representa uma seção de conteúdo, 
+    diferente da div section pode ser usada para agrupar elementos semânticos -->
+
+    <h2 class="section-title">Sobre o Projeto</h2>
+    <div class="card">
+      <p>
+        <strong>Resumo:</strong>
+        Este trabalho tem como objetivo apresentar o desenvolvimento de uma pulseira vibrotátil baseada 
+        em Arduino como tecnologia assistiva para pessoas com surdez e deficiência auditiva. 
+        O dispositivo capta sons do ambiente, como buzinas, e os converte em vibrações táteis, 
+        permitindo ao usuário perceber alertas importantes. A metodologia envolveu a construção do protótipo, 
+        testes em ambientes urbanos simulados e entrevistas com usuários potenciais. 
+        Conclui-se que a pulseira contribui para maior segurança, autonomia e inclusão social, 
+        sendo uma alternativa acessível e funcional para o cotidiano.
+      </p> 
+      <br>
+      <p style="text-indent: 1%;"> 
+        <strong>Objetivos</strong><br>
+        <ul>
+          <li> 
+            Montar um protótipo de pulseira que seja portátil e ergonômico
+          </li>
+        <li>
+            Identificar os sons ambientais mais críticos para a segurança do usuário
+        </li>
+        <li>
+            Programar o sistema para converter sinais sonoros em vibrações
+        </li>
+        <li>
+            Promover maior sensibilidade, autonomia e inclusão social para pessoas com surdez e deficiência auditiva
+        </li>
+      </p>
+ 
+    </div>
+  </section>
+
+  <!-- Explicação do funcionamento da pulseira -->
+  <section>
+  <h2 class="section-title">Como a Pulseira Funciona?</h2>
+
+  <div class="card">
+    
+    <p>
+      A pulseira vibrotátil funciona por meio da captação de sons do ambiente e da conversão desses estímulos em vibrações táteis percebidas pelo usuário.
+    </p>
+
+    <br>
+    <!-- functions-steps servir para organizar as etapas de funcionamento -->
+    <div class="function-steps">
+
+      <div class="step">
+        <h3>Captação do Som</h3>
+        <p>
+          O sensor MAX9814 detecta sons do ambiente, como buzinas, alarmes e chamadas, transformando esses estímulos em sinais elétricos.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>Processamento</h3>
+        <p>
+          O Arduino Nano recebe os sinais do sensor e processa as informações para identificar quando o motor vibratório deve ser acionado.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>Controle do Circuito</h3>
+        <p>
+          O transistor 2N2222 auxilia no acionamento do motor vibratório, enquanto o resistor de 1kΩ controla a corrente elétrica do circuito.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>Proteção do Sistema</h3>
+        <p>
+          O diodo 1N4007 protege os componentes contra possíveis variações elétricas geradas pelo motor vibratório.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>Vibração Tátil</h3>
+        <p>
+          Após o processamento, o motor vibratório DC 3V é ativado, emitindo vibrações que permitem ao usuário perceber os estímulos sonoros.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+  <!-- Seção de imagens do projeto -->
+  <section>
+    <h2 class="section-title">Projeto</h2>
+
+    <div class="carousel-container">
+      <div class="carousel" id="carousel">
+        <img src="esquemaLigacaoPulseira.jpeg" alt="Imagem 1">
+        <img src="pulseiraENDO.jpeg" alt="Imagem 2">
+        <img src="https://placehold.co/1200x500/png?text=Imagem+3" alt="Imagem 3">
+      </div>
+
+      <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+      <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+    </div>
+  </section>
+
+  <!--Video da Pulseira-->
+  <section>
+    <h2 class="section-title">Vídeo de Apresentação</h2>
+    <div class="card">
+    <p>Vídeo demonstrando o funcionamento da pulseira, testes realizados.</p>
+    <br>
+      <video controls style="height: 400px; width: 100%; border-radius: 20px; border: 2px solid #7cb0ff7c; background:#0a0f1f" poster="capaDOvideo.jpg">
+        <source src="link.do.video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+  </section>
+
+  <!-- Seção de galeria de imagens adicionais -->
+  <section>
+    <h2 class="section-title">Galeria do Projeto</h2>
+
+    <div class="gallery">
+      <div class="card placeholder">
+        Adicione aqui imagens do Arduino, sensores, montagem da pulseira,
+        testes ou fotos da apresentação.
+      </div>
+
+      <img src="https://placehold.co/600x400/png?text=Imagem+Extra+1" alt="Imagem Extra 1">
+      <img src="https://placehold.co/600x400/png?text=Imagem+Extra+2" alt="Imagem Extra 2">
+    </div>
+  </section>
+
+  <!-- Seção de créditos e participantes -->
+  <footer>
+    <div class="footer-box">
+      <h3>Créditos e Participantes</h3>
+
+      <div class="editable-space">
+        <p><strong>Participantes:</strong> 
+          <dt>
+            <dd>Antônio Almir Azevedo Sousa Filho</dd>
+            <dd>Bruna Sofia Fernandes Vieira</dd>
+            <dd>Jennifer Lopes da Silva Alves</dd>
+            <dd>José Gabriel Silva Abreu</dd>
+            <dd>Luís Guilherme Teixeira Rodrigues</dd>
+            <dd>Maria Meire Cândido Ávila</dd>
+            <dd>Ranara Pereira Souza</dd>
+            <dd>Raynna Ketally Soares Santos</dd>
+          </dt>
+        </p><br>
+        <p><strong>Professor Orientador:</strong> Prof. Me. Francisco Edilberto Firmino da Fonseca</p>
+        <br>
+        <p><strong>Instituição:</strong> EEEP Professor Onélio Porto</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 0;
+
+    function moveSlide(direction) {
+      const carousel = document.getElementById('carousel');
+      const totalSlides = carousel.children.length;
+
+      currentSlide += direction;
+
+      if (currentSlide < 0) {
+        currentSlide = totalSlides - 1;
+      }
+
+      if (currentSlide >= totalSlides) {
+        currentSlide = 0;
+      }
+
+      carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+    }
+  </script>
+
+</body>
+</html>
